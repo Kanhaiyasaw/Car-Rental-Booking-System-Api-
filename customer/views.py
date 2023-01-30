@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 from owner.models import AddProduct
-from helper.send_order import send_order_email
+from helper.order import send_order_email
 from authentication.models import CustomerDetail
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -34,10 +34,10 @@ class CustomerSideCarView(APIView):
         if len(request.query_params) == 0:
 
             car_obj = AddProduct.objects.filter(is_available=True).values(
-                "id",
                 "car_type",
                 "company_name",
                 "model_name",
+                "car_number",
                 "passing_year",
                 "per_day_rent",
             )
@@ -52,10 +52,10 @@ class CustomerSideCarView(APIView):
                     | Q(per_day_rent=rent)
                 )
             ).values(
-                "id",
                 "car_type",
                 "company_name",
                 "model_name",
+                "car_number",
                 "passing_year",
                 "per_day_rent",
             )
@@ -66,14 +66,15 @@ class CustomerSideCarView(APIView):
     def post(self, request, format=None):
         serializer = SendOrderSerializer(data=request.data)
         if serializer.is_valid():
-            usr_obj = AddProduct.objects.filter(id=request.data["product_id"])
+            usr_obj = AddProduct.objects.filter(car_number=request.data["car_number"])
+
             if usr_obj:
                 owner_email = usr_obj.values("email__email")[0]["email__email"]
-                product_id = usr_obj.values("id")[0]["id"]
                 customer_obj = CustomerDetail.objects.get(user=request.user)
+                product_obj = AddProduct.objects.get(car_number=request.data["car_number"])
                 send_order_email(
                     owner_email,
-                    product_id,
+                    product_obj,
                     customer_obj,
                 )
                 return Response(
@@ -91,4 +92,9 @@ class CustomerSideCarView(APIView):
                     "data": None,
                 }
                 return Response(data=response, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        response = {
+                "status":False,
+                "message":serializer.errors,
+                "data":None
+                }
+        return Response(data=response, status=status.HTTP_400_BAD_REQUEST)

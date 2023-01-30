@@ -10,6 +10,7 @@ class OwnerProductAdmin(admin.ModelAdmin):
         "car_type",
         "owner_name",
         "company_name",
+        "car_number",
         "model_name",
         "passing_year",
         "per_day_rent",

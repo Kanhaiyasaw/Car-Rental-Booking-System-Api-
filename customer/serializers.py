@@ -4,4 +4,4 @@ from owner.models import AddProduct
 
 
 class SendOrderSerializer(serializers.Serializer):
-    product_id = serializers.IntegerField(required=True)
+    car_number = serializers.CharField(required=True)

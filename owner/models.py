@@ -22,6 +22,7 @@ class AddProduct(models.Model):
     owner_name = models.CharField(max_length=120)
     company_name = models.CharField(max_length=150)
     model_name = models.CharField(max_length=150)
+    car_number = models.CharField(max_length=15, unique=True)
     passing_year = models.IntegerField()
     per_day_rent = models.IntegerField()
     is_available = models.BooleanField(default=True)
