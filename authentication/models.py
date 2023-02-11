@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+# That Store Owner detail and Extra detail
 class OwnerDetail(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE, blank=False)
@@ -17,7 +17,7 @@ class OwnerDetail(models.Model):
     def __str__(self):
         return str(self.user)
 
-
+# this Store Customer Detail And extra detail
 class CustomerDetail(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE, blank=False)

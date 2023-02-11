@@ -71,7 +71,10 @@ class CustomerSideCarView(APIView):
             if usr_obj:
                 owner_email = usr_obj.values("email__email")[0]["email__email"]
                 customer_obj = CustomerDetail.objects.get(user=request.user)
-                product_obj = AddProduct.objects.get(car_number=request.data["car_number"])
+                product_obj = AddProduct.objects.get(
+                    car_number=request.data["car_number"]
+                )
+                # send mail to the car owner for order notification
                 send_order_email(
                     owner_email,
                     product_obj,
@@ -79,6 +82,7 @@ class CustomerSideCarView(APIView):
                 )
                 return Response(
                     {
+                        # Success response
                         "status": True,
                         "message": "Order sent to the Owner. Wait for confirmation mail",
                         "data": None,
@@ -86,15 +90,13 @@ class CustomerSideCarView(APIView):
                     status=status.HTTP_200_OK,
                 )
             else:
+                # faild response
                 response = {
                     "status": False,
                     "message": "Product not Exists",
                     "data": None,
                 }
                 return Response(data=response, status=status.HTTP_400_BAD_REQUEST)
-        response = {
-                "status":False,
-                "message":serializer.errors,
-                "data":None
-                }
+        # failed response
+        response = {"status": False, "message": serializer.errors, "data": None}
         return Response(data=response, status=status.HTTP_400_BAD_REQUEST)

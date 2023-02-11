@@ -4,7 +4,7 @@ from authentication.views import (
     CustomerRegistrationView,
     UserLoginView,
 )
-
+# urls 
 urlpatterns = [
     path("owner_register/", OwnerRegestrationView.as_view(), name="owner_register"),
     path(

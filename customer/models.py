@@ -1,7 +1,7 @@
 from django.db import models
 from owner.models import AddProduct
 
-
+# that moodel store the data which car is successfully booked by the specific customer
 class BoookedCarDetail(models.Model):
     id = models.AutoField(primary_key=True)
     car_id = models.ForeignKey(

@@ -6,13 +6,14 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import Group
 from authentication.models import OwnerDetail, CustomerDetail
 
-
+# serilizer for extra field of Owner
 class OwnerExtraDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OwnerDetail
         fields = ["phone", "address"]
 
 
+# Owner Registration
 class OwnerRegistrationSerializer(serializers.ModelSerializer):
     # Registration Serializer
     extra_details = OwnerExtraDetailsSerializer()
@@ -55,12 +56,13 @@ class OwnerRegistrationSerializer(serializers.ModelSerializer):
         return OwnerDetail.objects.create(user=user, **extra_detail)
 
 
+# serilizer for extra field of Customer
 class CustomerExtraDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OwnerDetail
         fields = ["phone", "address"]
 
-
+# Customer Registration 
 class CustomerRegistrationSerializer(serializers.ModelSerializer):
     # Registration Serializer
     extra_details = CustomerExtraDetailsSerializer()
