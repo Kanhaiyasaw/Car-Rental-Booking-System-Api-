@@ -100,7 +100,7 @@ class ConfirmationMailView(APIView):
 
         if serializer.is_valid():
 
-            product_obj = AddProduct.objects.get(car_number=request.data["car_number"])
+            product_obj = AddProduct.objects.get(car_number=request.data["car_number"], is_available=True)
             customer_email = request.data["customer_email"]
             booking_status = request.data["book_status"]
             if booking_status == "True":

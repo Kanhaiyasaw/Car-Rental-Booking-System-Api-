@@ -67,7 +67,7 @@ class CustomerSideCarView(APIView):
         serializer = SendOrderSerializer(data=request.data)
         if serializer.is_valid():
             usr_obj = AddProduct.objects.filter(car_number=request.data["car_number"])
-
+            
             if usr_obj:
                 owner_email = usr_obj.values("email__email")[0]["email__email"]
                 customer_obj = CustomerDetail.objects.get(user=request.user)
