@@ -15,6 +15,7 @@ CAR_CHOICES = (
     ("pickup truck", "Pickup Truck"),
 )
 
+
 class AddProduct(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.ForeignKey(User, null=False, on_delete=models.CASCADE, blank=False)
@@ -22,6 +23,7 @@ class AddProduct(models.Model):
     owner_name = models.CharField(max_length=120)
     company_name = models.CharField(max_length=150)
     model_name = models.CharField(max_length=150)
+    car_image = models.ImageField(blank=True,upload_to="media/")
     car_number = models.CharField(max_length=15, unique=True)
     passing_year = models.IntegerField()
     per_day_rent = models.IntegerField()

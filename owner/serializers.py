@@ -3,7 +3,7 @@ from owner.models import AddProduct
 from authentication.models import CustomerDetail
 
 
-class AddProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddProduct
         fields = [
@@ -13,13 +13,24 @@ class AddProductSerializer(serializers.ModelSerializer):
             "model_name",
             "car_number",
             "passing_year",
-            "per_day_rent",
+            "per_day_rent"
         ]
 
     def create(self, validated_data):
         return AddProduct.objects.create(
             email=self.context.get("user"), **validated_data
         )
+    def update(self, instance, validated_data):
+        instance.car_type = validated_data["car_type"]
+        instance.owner_name = validated_data["owner_name"]
+        instance.company_name = validated_data["company_name"]
+        instance.model_name = validated_data["model_name"]
+        instance.car_number = validated_data["car_number"]
+        instance.passing_year = validated_data["passing_year"]
+        instance.per_day_rent = validated_data["per_day_rent"]
+
+        instance.save()
+        return super().update(instance=instance, validated_data=validated_data)
 
 
 class ReceivedConfirmationSerializer(serializers.Serializer):
